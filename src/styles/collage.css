@@ -26,6 +26,15 @@
   cursor: pointer;
   outline: none;
   transition: background 0.15s;
+  touch-action: none; /* let pointer events handle touch */
+}
+
+.slot.has-image {
+  cursor: grab;
+}
+
+.slot.dragging {
+  cursor: grabbing;
 }
 
 .slot:focus-visible {
@@ -39,12 +48,9 @@
 
 .slot img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
   display: block;
+  pointer-events: none;
+  /* width, height, left, top are set by positionImage() in JS */
 }
 
 .slot-placeholder {

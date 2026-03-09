@@ -13,8 +13,11 @@ export function selectLayout(layout) {
   state.selectedLayout = layout;
   state.slots = Array.from({ length: layout.slots }, () => ({
     image: null,
-    objectPosition: '50% 50%',
     objectURL: null,
+    pan: { x: 0, y: 0 },
+    zoom: 1,
+    naturalWidth: 0,
+    naturalHeight: 0,
   }));
   renderLayoutPicker();
   renderCollageGrid();
@@ -26,6 +29,10 @@ export function setSlotImage(index, file) {
   }
   state.slots[index].image = file;
   state.slots[index].objectURL = URL.createObjectURL(file);
+  state.slots[index].pan = { x: 0, y: 0 };
+  state.slots[index].zoom = 1;
+  state.slots[index].naturalWidth = 0;
+  state.slots[index].naturalHeight = 0;
 }
 
 export function resetCollage() {
@@ -35,8 +42,11 @@ export function resetCollage() {
   if (state.selectedLayout) {
     state.slots = Array.from({ length: state.selectedLayout.slots }, () => ({
       image: null,
-      objectPosition: '50% 50%',
       objectURL: null,
+      pan: { x: 0, y: 0 },
+      zoom: 1,
+      naturalWidth: 0,
+      naturalHeight: 0,
     }));
   }
   renderCollageGrid();

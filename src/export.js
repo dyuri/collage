@@ -3,30 +3,53 @@ import { state } from './app.js';
 const OUTPUT_WIDTH = 2400;
 
 /**
- * Compute object-fit:cover crop rect for drawImage.
- * Returns { sx, sy, sw, sh } — the source crop in image coords.
+ * Compute the source crop rect for drawImage that replicates
+ * object-fit:cover + translate(panX,panY) scale(zoom) on the canvas.
+ *
+ * @param {number} imgNatW - natural image width
+ * @param {number} imgNatH - natural image height
+ * @param {number} destW   - canvas destination rect width (px)
+ * @param {number} destH   - canvas destination rect height (px)
+ * @param {number} panX    - pan in canvas dest pixels (= CSS pan * scale)
+ * @param {number} panY    - pan in canvas dest pixels
+ * @param {number} zoom    - zoom factor (1 = cover fill)
+ * @returns {{ sx, sy, sw, sh }}
  */
-function coverCrop(imgNatW, imgNatH, destW, destH, objectPosition) {
+function coverCrop(imgNatW, imgNatH, destW, destH, panX, panY, zoom) {
   const imgAspect = imgNatW / imgNatH;
   const destAspect = destW / destH;
 
-  let sw, sh;
+  // Base cover-fit source rect (zoom=1, centered)
+  let sw0, sh0;
   if (imgAspect > destAspect) {
-    // Image is wider than dest — crop horizontally
-    sh = imgNatH;
-    sw = imgNatH * destAspect;
+    sh0 = imgNatH;
+    sw0 = imgNatH * destAspect;
   } else {
-    // Image is taller than dest — crop vertically
-    sw = imgNatW;
-    sh = imgNatW / destAspect;
+    sw0 = imgNatW;
+    sh0 = imgNatW / destAspect;
   }
+  const sx0 = (imgNatW - sw0) / 2;
+  const sy0 = (imgNatH - sh0) / 2;
 
-  // Parse objectPosition percentages
-  const [px, py] = objectPosition.split(' ').map((v) => parseFloat(v) / 100);
-  const sx = (imgNatW - sw) * px;
-  const sy = (imgNatH - sh) * py;
+  // Zoomed: visible source rect shrinks by zoom
+  const sw = sw0 / zoom;
+  const sh = sh0 / zoom;
 
-  return { sx, sy, sw, sh };
+  // Center of the zoomed crop (in source coords)
+  const sxCenter = sx0 + (sw0 - sw) / 2;
+  const syCenter = sy0 + (sh0 - sh) / 2;
+
+  // Pan: 1 dest canvas pixel = sw/destW source pixels
+  // Positive pan (image moved right) → we see more of the left → sx decreases
+  const sx = sxCenter - panX * (sw / destW);
+  const sy = syCenter - panY * (sh / destH);
+
+  return {
+    sx: Math.max(0, Math.min(imgNatW - sw, sx)),
+    sy: Math.max(0, Math.min(imgNatH - sh, sy)),
+    sw,
+    sh,
+  };
 }
 
 export async function exportCollage() {
@@ -37,7 +60,6 @@ export async function exportCollage() {
 
   const gridEl = document.getElementById('collage-grid');
   const slotEls = gridEl.querySelectorAll('.slot');
-
   if (slotEls.length === 0) return;
 
   const gridRect = gridEl.getBoundingClientRect();
@@ -49,7 +71,6 @@ export async function exportCollage() {
   canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
 
-  // Background
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, OUTPUT_WIDTH, outputHeight);
 
@@ -72,7 +93,6 @@ export async function exportCollage() {
     const dh = Math.round(slotRect.height * scale);
 
     if (!slotData.objectURL) {
-      // Draw placeholder grey
       ctx.fillStyle = '#cccccc';
       ctx.fillRect(dx, dy, dw, dh);
       continue;
@@ -80,12 +100,13 @@ export async function exportCollage() {
 
     try {
       const img = await loadImage(slotData.objectURL);
+      // Convert pan from CSS pixels to canvas pixels
+      const panX = slotData.pan.x * scale;
+      const panY = slotData.pan.y * scale;
       const { sx, sy, sw, sh } = coverCrop(
-        img.naturalWidth,
-        img.naturalHeight,
-        dw,
-        dh,
-        slotData.objectPosition
+        img.naturalWidth, img.naturalHeight,
+        dw, dh,
+        panX, panY, slotData.zoom
       );
       ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
     } catch {
