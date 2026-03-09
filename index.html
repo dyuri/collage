@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>Collage Maker</title>
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <link rel="stylesheet" href="/src/styles/layout-picker.css" />
+  <link rel="stylesheet" href="/src/styles/collage.css" />
+  <link rel="stylesheet" href="/src/styles/toolbar.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Collage Maker</h1>
+  </header>
+  <main class="app-main">
+    <section id="layout-picker" class="layout-picker" aria-label="Layout templates"></section>
+    <section id="collage-grid-container" class="collage-grid-container">
+      <div id="collage-grid" class="collage-grid"></div>
+    </section>
+  </main>
+  <footer id="toolbar" class="toolbar"></footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
