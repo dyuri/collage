@@ -1,10 +1,40 @@
-import { resetCollage } from '../app.js';
+import { resetCollage, setAspectRatio, state } from '../app.js';
 import { exportCollage } from '../export.js';
+
+const RATIOS = [
+  { label: '1:1', w: 1, h: 1 },
+  { label: '4:3', w: 4, h: 3 },
+  { label: '3:2', w: 3, h: 2 },
+  { label: '16:9', w: 16, h: 9 },
+  { label: '9:16', w: 9, h: 16 },
+  { label: '3:4', w: 3, h: 4 },
+];
 
 export function renderToolbar() {
   const toolbar = document.getElementById('toolbar');
   if (!toolbar) return;
 
+  // Aspect ratio dropdown (left side)
+  const ratioSelect = document.createElement('select');
+  ratioSelect.className = 'ratio-select';
+  ratioSelect.setAttribute('aria-label', 'Aspect ratio');
+
+  RATIOS.forEach(({ label, w, h }) => {
+    const option = document.createElement('option');
+    option.value = `${w}:${h}`;
+    option.textContent = label;
+    if (w === state.aspectRatio.w && h === state.aspectRatio.h) {
+      option.selected = true;
+    }
+    ratioSelect.appendChild(option);
+  });
+
+  ratioSelect.addEventListener('change', () => {
+    const [w, h] = ratioSelect.value.split(':').map(Number);
+    setAspectRatio(w, h);
+  });
+
+  // Action buttons (right side)
   const exportBtn = document.createElement('button');
   exportBtn.className = 'btn btn-primary';
   exportBtn.textContent = 'Export PNG';
@@ -15,6 +45,11 @@ export function renderToolbar() {
   resetBtn.textContent = 'Reset';
   resetBtn.addEventListener('click', resetCollage);
 
+  const spacer = document.createElement('div');
+  spacer.style.marginLeft = 'auto';
+
+  toolbar.appendChild(ratioSelect);
+  toolbar.appendChild(spacer);
   toolbar.appendChild(resetBtn);
   toolbar.appendChild(exportBtn);
 }

@@ -1,11 +1,22 @@
 import { state, setSlotImage } from '../app.js';
 import { renderCollageGrid } from './collage-grid.js';
 
+export function repositionAllImages(gridEl) {
+  gridEl.querySelectorAll('.slot[data-index]').forEach((slotEl) => {
+    const img = slotEl.querySelector('img');
+    if (!img) return;
+    const index = parseInt(slotEl.dataset.index, 10);
+    const slotData = state.slots[index];
+    if (slotData) positionImage(img, slotEl, slotData);
+  });
+}
+
 export function createSlot(index, gridArea) {
   const slotData = state.slots[index];
 
   const el = document.createElement('div');
   el.className = 'slot';
+  el.dataset.index = index;
   el.setAttribute('role', 'button');
   el.setAttribute('tabindex', '0');
   el.setAttribute('aria-label', `Image slot ${index + 1}. Click or drop an image.`);

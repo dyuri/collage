@@ -6,7 +6,7 @@ A Progressive Web App for creating image collages. Pick a layout, drop in your p
 
 - 7 built-in layout templates (2-col, 3-col, 2-row, 2×2, big-left, big-top, 1+3)
 - Drag-and-drop images from your filesystem or click to pick
-- Live preview with `object-fit: cover` cropping
+- Live preview, pan and zoom each image within its slot
 - Export to high-resolution PNG (2400px wide)
 - Works offline — installable as a PWA
 

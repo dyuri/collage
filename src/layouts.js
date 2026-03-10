@@ -40,6 +40,26 @@ export const layouts = [
     },
   },
   {
+    id: 'step-horizontal',
+    name: 'Step →',
+    slots: 4,
+    grid: {
+      templateColumns: '1fr 1fr 1fr',
+      templateRows: '1fr 1fr',
+      templateAreas: `"a a b" "c d d"`,
+    },
+  },
+  {
+    id: 'step-vertical',
+    name: 'Step ↓',
+    slots: 4,
+    grid: {
+      templateColumns: '1fr 1fr',
+      templateRows: '1fr 1fr 1fr',
+      templateAreas: `"a b" "a d" "c d"`,
+    },
+  },
+  {
     id: 'big-left',
     name: 'Big Left',
     slots: 3,
