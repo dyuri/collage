@@ -135,6 +135,7 @@ export function renderCollageGrid() {
   applyGridSizes(container);
   container.style.gap = `${state.gap}px`;
   container.style.aspectRatio = `${state.aspectRatio.w} / ${state.aspectRatio.h}`;
+  container.style.background = state.bgColor;
 
   const { templateAreas } = state.selectedLayout.grid;
   if (templateAreas) {

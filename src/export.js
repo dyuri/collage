@@ -71,7 +71,7 @@ export async function exportCollage() {
   canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = state.bgColor;
   ctx.fillRect(0, 0, OUTPUT_WIDTH, outputHeight);
 
   const loadImage = (url) =>

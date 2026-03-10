@@ -1,4 +1,4 @@
-import { resetCollage, setAspectRatio, state } from '../app.js';
+import { resetCollage, setAspectRatio, setBgColor, state } from '../app.js';
 import { exportCollage } from '../export.js';
 
 const RATIOS = [
@@ -45,10 +45,24 @@ export function renderToolbar() {
   resetBtn.textContent = 'Reset';
   resetBtn.addEventListener('click', resetCollage);
 
+  // Background color picker
+  const colorLabel = document.createElement('label');
+  colorLabel.className = 'color-label';
+  colorLabel.textContent = 'BG';
+
+  const colorInput = document.createElement('input');
+  colorInput.type = 'color';
+  colorInput.className = 'color-input';
+  colorInput.value = state.bgColor;
+  colorInput.setAttribute('aria-label', 'Background / gap color');
+  colorInput.addEventListener('input', () => setBgColor(colorInput.value));
+  colorLabel.appendChild(colorInput);
+
   const spacer = document.createElement('div');
   spacer.style.marginLeft = 'auto';
 
   toolbar.appendChild(ratioSelect);
+  toolbar.appendChild(colorLabel);
   toolbar.appendChild(spacer);
   toolbar.appendChild(resetBtn);
   toolbar.appendChild(exportBtn);

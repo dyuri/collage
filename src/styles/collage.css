@@ -13,7 +13,6 @@
   position: relative;
   width: 100%;
   max-width: 800px;
-  background: #111;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -22,12 +21,13 @@
 .divider {
   position: absolute;
   z-index: 10;
+  touch-action: none;
 }
 
 .divider-col {
   top: 0;
   bottom: 0;
-  width: 16px;
+  width: 28px;
   transform: translateX(-50%);
   cursor: col-resize;
 }
@@ -35,7 +35,7 @@
 .divider-row {
   left: 0;
   right: 0;
-  height: 16px;
+  height: 28px;
   transform: translateY(-50%);
   cursor: row-resize;
 }

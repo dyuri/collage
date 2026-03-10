@@ -14,6 +14,7 @@ export const state = {
   columnSizes: [],
   rowSizes: [],
   aspectRatio: { w: 4, h: 3 },
+  bgColor: '#000000',
 };
 
 export function selectLayout(layout) {
@@ -42,6 +43,12 @@ export function setSlotImage(index, file) {
   state.slots[index].zoom = 1;
   state.slots[index].naturalWidth = 0;
   state.slots[index].naturalHeight = 0;
+}
+
+export function setBgColor(color) {
+  state.bgColor = color;
+  const gridEl = document.getElementById('collage-grid');
+  if (gridEl) gridEl.style.background = color;
 }
 
 export function setAspectRatio(w, h) {
