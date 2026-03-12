@@ -25,9 +25,12 @@ Open [http://localhost:5173](http://localhost:5173).
 ## Build
 
 ```bash
-npm run build    # outputs to dist/
-npm run preview  # preview the production build
+npm run build                        # outputs to dist/, served from /
+BASE_PATH=/collage/ npm run build    # build for a subfolder deployment
+npm run preview                      # preview the production build
 ```
+
+The `BASE_PATH` environment variable sets the base URL for all assets, the service worker, and the web app manifest. Use a leading and trailing slash (e.g. `/collage/`). Omitting it defaults to `/`.
 
 ## Usage
 

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(BASE_PATH=/collage/ npm run build 2>&1)"
+    ]
+  }
+}
