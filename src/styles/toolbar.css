@@ -27,6 +27,44 @@
   cursor: pointer;
 }
 
+.overlay-label {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.overlay-label:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.overlay-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.overlay-clear:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
 .ratio-select {
   padding: 6px 8px;
   border: 1px solid var(--border);

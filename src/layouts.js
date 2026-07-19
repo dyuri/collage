@@ -89,4 +89,14 @@ export const layouts = [
       templateAreas: `"a b" "a c" "a d"`,
     },
   },
+  {
+    id: 'single',
+    name: 'Single Image',
+    slots: 1,
+    grid: {
+      templateColumns: '1fr',
+      templateRows: '1fr',
+      templateAreas: null,
+    },
+  },
 ];

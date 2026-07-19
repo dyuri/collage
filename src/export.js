@@ -115,6 +115,15 @@ export async function exportCollage() {
     }
   }
 
+  if (state.overlay.objectURL) {
+    try {
+      const overlayImg = await loadImage(state.overlay.objectURL);
+      ctx.drawImage(overlayImg, 0, 0, OUTPUT_WIDTH, outputHeight);
+    } catch {
+      // overlay failed to load; skip it rather than failing the whole export
+    }
+  }
+
   canvas.toBlob(
     (blob) => {
       const url = URL.createObjectURL(blob);

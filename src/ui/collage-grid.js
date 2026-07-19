@@ -116,6 +116,28 @@ function addDividers(gridEl) {
   }
 }
 
+function renderOverlayLayer(gridEl) {
+  let img = gridEl.querySelector('.collage-overlay');
+  if (!img) {
+    img = document.createElement('img');
+    img.className = 'collage-overlay';
+    img.alt = '';
+    gridEl.appendChild(img);
+  }
+  if (state.overlay.objectURL) {
+    img.src = state.overlay.objectURL;
+    img.style.display = '';
+  } else {
+    img.style.display = 'none';
+  }
+}
+
+export function updateOverlay() {
+  const container = document.getElementById('collage-grid');
+  if (!container || !state.selectedLayout) return;
+  renderOverlayLayer(container);
+}
+
 export function renderCollageGrid() {
   const container = document.getElementById('collage-grid');
   if (!container) return;
@@ -153,6 +175,7 @@ export function renderCollageGrid() {
     }
   }
 
+  renderOverlayLayer(container);
   addDividers(container);
 
   resizeObserver = new ResizeObserver(() => repositionAllImages(container));

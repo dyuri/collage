@@ -4,13 +4,14 @@ A Progressive Web App for creating image collages. Pick a layout, drop in your p
 
 ## Features
 
-- 9 built-in layout templates (2-col, 3-col, 2-row, 2×2, step splits, big-left, big-top, 1+3)
+- 10 built-in layout templates (2-col, 3-col, 2-row, 2×2, step splits, big-left, big-top, 1+3, single image)
 - Drag-and-drop images from your filesystem or click to pick
 - Live preview, pan and zoom each image within its slot
 - Draggable gap dividers — resize slot proportions by dragging the gaps between images
 - Aspect ratio presets — 1:1, 4:3, 3:2, 16:9, 9:16, 3:4
 - Background/gap color picker
-- Export to high-resolution PNG (2400px wide) reflecting pan, zoom, proportions, and background color
+- Transparent PNG overlay (frames, watermarks, textures) composited on top of the whole collage
+- Export to high-resolution PNG (2400px wide) reflecting pan, zoom, proportions, background color, and overlay
 - Works offline — installable as a PWA
 
 ## Getting Started
@@ -39,8 +40,9 @@ The `BASE_PATH` environment variable sets the base URL for all assets, the servi
 3. Pan by dragging, zoom with scroll or pinch
 4. Drag the gaps between slots to resize proportions
 5. Use the toolbar to pick an aspect ratio and background color
-6. Click **Export PNG** to download the collage
-7. Click **Reset** to clear all images
+6. Click **Overlay** to add a transparent PNG on top of the whole collage (e.g. a frame or watermark); click **×** to remove it
+7. Click **Export PNG** to download the collage
+8. Click **Reset** to clear all images
 
 ## Tech
 

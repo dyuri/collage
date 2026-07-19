@@ -1,4 +1,4 @@
-import { resetCollage, setAspectRatio, setBgColor, state } from '../app.js';
+import { resetCollage, setAspectRatio, setBgColor, setOverlayImage, clearOverlay, state } from '../app.js';
 import { exportCollage } from '../export.js';
 
 const RATIOS = [
@@ -13,6 +13,8 @@ const RATIOS = [
 export function renderToolbar() {
   const toolbar = document.getElementById('toolbar');
   if (!toolbar) return;
+
+  toolbar.innerHTML = '';
 
   // Aspect ratio dropdown (left side)
   const ratioSelect = document.createElement('select');
@@ -58,11 +60,42 @@ export function renderToolbar() {
   colorInput.addEventListener('input', () => setBgColor(colorInput.value));
   colorLabel.appendChild(colorInput);
 
+  // Overlay picker
+  const hasOverlay = !!state.overlay.objectURL;
+
+  const overlayLabel = document.createElement('label');
+  overlayLabel.className = 'overlay-label';
+  overlayLabel.textContent = hasOverlay ? 'Overlay ✓' : 'Overlay';
+  overlayLabel.title = 'Add a transparent PNG overlay on top of the collage';
+
+  const overlayInput = document.createElement('input');
+  overlayInput.type = 'file';
+  overlayInput.accept = 'image/png';
+  overlayInput.hidden = true;
+  overlayInput.setAttribute('aria-label', 'Overlay image');
+  overlayInput.addEventListener('change', () => {
+    const file = overlayInput.files[0];
+    if (file) setOverlayImage(file);
+  });
+  overlayLabel.appendChild(overlayInput);
+
   const spacer = document.createElement('div');
   spacer.style.marginLeft = 'auto';
 
   toolbar.appendChild(ratioSelect);
   toolbar.appendChild(colorLabel);
+  toolbar.appendChild(overlayLabel);
+
+  if (hasOverlay) {
+    const overlayClearBtn = document.createElement('button');
+    overlayClearBtn.className = 'overlay-clear';
+    overlayClearBtn.textContent = '×';
+    overlayClearBtn.title = 'Remove overlay';
+    overlayClearBtn.setAttribute('aria-label', 'Remove overlay');
+    overlayClearBtn.addEventListener('click', clearOverlay);
+    toolbar.appendChild(overlayClearBtn);
+  }
+
   toolbar.appendChild(spacer);
   toolbar.appendChild(resetBtn);
   toolbar.appendChild(exportBtn);

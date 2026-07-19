@@ -1,6 +1,6 @@
 import { layouts } from './layouts.js';
 import { renderLayoutPicker } from './ui/layout-picker.js';
-import { renderCollageGrid } from './ui/collage-grid.js';
+import { renderCollageGrid, updateOverlay } from './ui/collage-grid.js';
 import { renderToolbar } from './ui/toolbar.js';
 
 function parseFrSizes(template) {
@@ -15,6 +15,7 @@ export const state = {
   rowSizes: [],
   aspectRatio: { w: 4, h: 3 },
   bgColor: '#000000',
+  overlay: { file: null, objectURL: null },
 };
 
 export function selectLayout(layout) {
@@ -58,6 +59,26 @@ export function setAspectRatio(w, h) {
     gridEl.style.aspectRatio = `${w} / ${h}`;
     // ResizeObserver in collage-grid.js triggers image repositioning automatically
   }
+}
+
+export function setOverlayImage(file) {
+  if (state.overlay.objectURL) {
+    URL.revokeObjectURL(state.overlay.objectURL);
+  }
+  state.overlay.file = file;
+  state.overlay.objectURL = URL.createObjectURL(file);
+  updateOverlay();
+  renderToolbar();
+}
+
+export function clearOverlay() {
+  if (state.overlay.objectURL) {
+    URL.revokeObjectURL(state.overlay.objectURL);
+  }
+  state.overlay.file = null;
+  state.overlay.objectURL = null;
+  updateOverlay();
+  renderToolbar();
 }
 
 export function resetCollage() {
