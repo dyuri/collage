@@ -15,6 +15,7 @@ export const state = {
   rowSizes: [],
   aspectRatio: { w: 4, h: 3 },
   bgColor: '#000000',
+  bgTransparent: false,
   overlay: { file: null, objectURL: null },
 };
 
@@ -49,7 +50,16 @@ export function setSlotImage(index, file) {
 export function setBgColor(color) {
   state.bgColor = color;
   const gridEl = document.getElementById('collage-grid');
-  if (gridEl) gridEl.style.background = color;
+  if (gridEl && !state.bgTransparent) gridEl.style.background = color;
+}
+
+export function setBgTransparent(transparent) {
+  state.bgTransparent = transparent;
+  const gridEl = document.getElementById('collage-grid');
+  if (gridEl) {
+    gridEl.classList.toggle('bg-transparent', transparent);
+    gridEl.style.background = transparent ? '' : state.bgColor;
+  }
 }
 
 export function setAspectRatio(w, h) {

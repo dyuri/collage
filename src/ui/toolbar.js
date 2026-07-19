@@ -1,4 +1,4 @@
-import { resetCollage, setAspectRatio, setBgColor, setOverlayImage, clearOverlay, state } from '../app.js';
+import { resetCollage, setAspectRatio, setBgColor, setBgTransparent, setOverlayImage, clearOverlay, state } from '../app.js';
 import { exportCollage } from '../export.js';
 
 const RATIOS = [
@@ -56,9 +56,25 @@ export function renderToolbar() {
   colorInput.type = 'color';
   colorInput.className = 'color-input';
   colorInput.value = state.bgColor;
+  colorInput.disabled = state.bgTransparent;
   colorInput.setAttribute('aria-label', 'Background / gap color');
   colorInput.addEventListener('input', () => setBgColor(colorInput.value));
   colorLabel.appendChild(colorInput);
+
+  const transparentLabel = document.createElement('label');
+  transparentLabel.className = 'transparent-label';
+  transparentLabel.title = 'Export with a transparent background instead of the BG color';
+
+  const transparentInput = document.createElement('input');
+  transparentInput.type = 'checkbox';
+  transparentInput.checked = state.bgTransparent;
+  transparentInput.setAttribute('aria-label', 'Transparent background');
+  transparentInput.addEventListener('change', () => {
+    setBgTransparent(transparentInput.checked);
+    colorInput.disabled = transparentInput.checked;
+  });
+  transparentLabel.appendChild(transparentInput);
+  transparentLabel.appendChild(document.createTextNode('Transparent'));
 
   // Overlay picker
   const hasOverlay = !!state.overlay.objectURL;
@@ -84,6 +100,7 @@ export function renderToolbar() {
 
   toolbar.appendChild(ratioSelect);
   toolbar.appendChild(colorLabel);
+  toolbar.appendChild(transparentLabel);
   toolbar.appendChild(overlayLabel);
 
   if (hasOverlay) {

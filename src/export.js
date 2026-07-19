@@ -71,8 +71,10 @@ export async function exportCollage() {
   canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = state.bgColor;
-  ctx.fillRect(0, 0, OUTPUT_WIDTH, outputHeight);
+  if (!state.bgTransparent) {
+    ctx.fillStyle = state.bgColor;
+    ctx.fillRect(0, 0, OUTPUT_WIDTH, outputHeight);
+  }
 
   const loadImage = (url) =>
     new Promise((resolve, reject) => {
@@ -93,8 +95,10 @@ export async function exportCollage() {
     const dh = Math.round(slotRect.height * scale);
 
     if (!slotData.objectURL) {
-      ctx.fillStyle = '#cccccc';
-      ctx.fillRect(dx, dy, dw, dh);
+      if (!state.bgTransparent) {
+        ctx.fillStyle = '#cccccc';
+        ctx.fillRect(dx, dy, dw, dh);
+      }
       continue;
     }
 
@@ -110,8 +114,10 @@ export async function exportCollage() {
       );
       ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
     } catch {
-      ctx.fillStyle = '#999999';
-      ctx.fillRect(dx, dy, dw, dh);
+      if (!state.bgTransparent) {
+        ctx.fillStyle = '#999999';
+        ctx.fillRect(dx, dy, dw, dh);
+      }
     }
   }
 

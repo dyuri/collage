@@ -6,6 +6,16 @@
   border-top: 1px solid var(--border);
   background: var(--surface);
   flex-shrink: 0;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.toolbar > * {
+  flex-shrink: 0;
 }
 
 .color-label {
@@ -24,6 +34,19 @@
   border: 1px solid var(--border);
   border-radius: 5px;
   background: var(--surface-2);
+  cursor: pointer;
+}
+
+.transparent-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.transparent-label input[type="checkbox"] {
   cursor: pointer;
 }
 
